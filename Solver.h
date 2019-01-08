@@ -4,10 +4,10 @@
 #define PROJECTNUM2_SOLVER_H
 
 
-template<class T1, class T2>
+template<class PROBLEM, class SOLUTION>
 class Solver {
 public:
-    virtual T2 solve(T1 problem) = 0;
+    virtual SOLUTION solve(PROBLEM problem) = 0;
 };
 
 

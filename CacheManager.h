@@ -4,12 +4,12 @@
 #define PROJECTNUM2_CACHMANNAGER_H
 using namespace std;
 
-template <class T1, class  T2>
+template <class PROBLEM, class SOLUTION>
 class CacheManager {
 public:
-    virtual bool haveSolution(T1 problem) = 0;
-    virtual T2 getSolution(T1 problem) = 0;
-    virtual void saveSolution(T1 problem, T2 solution) = 0;
+    virtual bool haveSolution(PROBLEM problem) = 0;
+    virtual SOLUTION getSolution(PROBLEM problem) = 0;
+    virtual void saveSolution(PROBLEM problem, SOLUTION solution) = 0;
 
 };
 

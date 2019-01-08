@@ -2,10 +2,10 @@
 #ifndef PROJECTNUM2_SEARCHER_H
 #define PROJECTNUM2_SEARCHER_H
 
-template <class T1,class T>
+template <class VALUE>
 class Searcher {
 public:
-    virtual T1 search (Searchable<T> searchable) = 0;
+    virtual VALUE search (Searchable<VALUE> searchable) = 0;
     virtual int getNumberOfNodesEvaluated() = 0;
 };
 

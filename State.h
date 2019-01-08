@@ -1,14 +1,27 @@
 #ifndef PROJECTNUM2_STATE_H
 #define PROJECTNUM2_STATE_H
 
-template<class T>
+template<class VALUE>
 class State {
-    T state;
-    double cost;
-    State<T> cameFrom;
+    VALUE state;
 public:
-    State(T state);
-    virtual bool equal(State<T> state)=0;
+    VALUE getState() const;
+
+    double getCost() const;
+
+public:
+    void setState(VALUE state);
+
+private:
+    double cost;
+    State<VALUE> cameFrom;
+public:
+    State();
+    virtual bool equal(State<VALUE> states);
+    void setCameFrom(State<VALUE> states);
+    State<VALUE> getCameFrom();
+
+    void setCost(double cost);
 };
 
 
