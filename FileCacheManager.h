@@ -12,12 +12,62 @@ template <class T1, class  T2>
 class FileCacheManager : public CacheManager <string,string> {
     map<string,string> solutionMap;
 public:
-    void readFile();
-    FileCacheManager();
-    ~FileCacheManager();
-    virtual bool haveSolution(string problem);
-    virtual string getSolution(string problem);
-    virtual void saveSolution(string problem, string solution);
+
+    void readFile() {
+        string line;
+        string problem,solution;
+        ifstream problemsFile("solutionFile.txt");
+        if (problemsFile.is_open()) {
+            while (getline(problemsFile,line)){
+                char * temp= const_cast<char*>(line.c_str());
+                temp = strtok(temp, ";");
+                problem=temp;
+                temp=strtok(NULL, ";");
+                solution=temp;
+                this->solutionMap.insert(pair<string,string>(problem,solution));
+            }
+            problemsFile.close();
+        }
+    }
+
+    FileCacheManager() {
+        this->readFile();
+    }
+
+
+    ~FileCacheManager() {
+        ofstream problemsFile("solutionFile.txt",ios::trunc);
+        if (problemsFile.is_open()) {
+            map<string, string> ::iterator iter;
+            for (iter = this->solutionMap.begin(); iter != this->solutionMap.end(); iter++) {
+                problemsFile << (*iter).first;
+                problemsFile << ";";
+                problemsFile << (*iter).second;
+                problemsFile << "\n";
+            }
+        }
+    }
+
+
+    string getSolution(string problem) {
+        return this->solutionMap.find(problem)->second;
+    }
+
+    void saveSolution(string problem, string solution) {
+        this->solutionMap.insert(pair<string,string> (problem, solution));
+    }
+
+    bool haveSolution(string problem) {
+        if (this->solutionMap.count(problem)) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+
+
 };
 
 

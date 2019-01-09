@@ -2,26 +2,43 @@
 #define PROJECTNUM2_STATE_H
 
 template<class VALUE>
-class State {
+class State  {
     VALUE state;
-public:
-    VALUE getState() const;
-
-    double getCost() const;
-
-public:
-    void setState(VALUE state);
-
-private:
     double cost;
-    State<VALUE> cameFrom;
+    State<VALUE>* cameFrom;
 public:
-    State();
-    virtual bool equal(State<VALUE> states);
-    void setCameFrom(State<VALUE> states);
-    State<VALUE> getCameFrom();
+    State() {
+    }
 
-    void setCost(double cost);
+    State<VALUE>* getCameFrom() {
+        return this->cameFrom;
+    }
+
+    bool equal(State<VALUE>* states) {
+        return this->state == states->state;
+    }
+
+    void setCameFrom(State<VALUE>* states) {
+        this->cameFrom = states;
+    }
+
+
+    void setCost(double cost) {
+        State::cost = cost;
+    }
+
+    void setState(VALUE state) {
+        State::state = state;
+    }
+
+    VALUE getState() const {
+        return state;
+    }
+
+    double getCost() const {
+        return cost;
+    }
+
 };
 
 

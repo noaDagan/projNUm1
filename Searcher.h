@@ -5,7 +5,7 @@
 template <class VALUE>
 class Searcher {
 public:
-    virtual VALUE search (Searchable<VALUE> searchable) = 0;
+    virtual VALUE search (Searchable<VALUE>* searchable) = 0;
     virtual int getNumberOfNodesEvaluated() = 0;
 };
 
