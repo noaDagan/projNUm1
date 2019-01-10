@@ -86,8 +86,7 @@ public:
         return this->numberOfNodesEvaluated;
     }
 
-    VALUE
-    createBackTrace(Searchable<VALUE> *searchable, State<VALUE> *goalState) {
+    VALUE createBackTrace(Searchable<VALUE> *searchable, State<VALUE> *goalState) {
         string result = "";
         State<VALUE> *startState = searchable->getInitialState();
         while (!goalState->equal(startState)) {
