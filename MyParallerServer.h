@@ -11,32 +11,29 @@
 #include "Server.h"
 #include "ClientHandler.h"
 #include <time.h>
+#include <vector>
 
-#ifndef PROJECTNUM2_MYSERIALSERVER_H
-#define PROJECTNUM2_MYSERIALSERVER_H
-
+#ifndef PROJECTNUM2_MYPARALLERSERVER_H
+#define PROJECTNUM2_MYPARALLERSERVER_H
 using namespace server_side;
 
-class MySerialServer : public Server {
+class MyParallerServer : public Server {
 public:
     //Constructor
-    MySerialServer();
+    MyParallerServer();
 
-/**
- * The function open a socket
- * @param port the number of port
- * @param clientHandler a client
- */
+    /**
+     * The function open a server that listem to multiple clients simultaneously
+     */
     void open(int port, ClientHandler *clientHandler);
-/**
- * The function stop the connection socket
- * @param socketFd a socket
- */
+
+    /**
+     * The function stop the server
+     */
     void stop(int socketFd);
 
-    //Distructor
-    virtual ~MySerialServer() {};
+    virtual ~MyParallerServer() {};
 };
 
 
-#endif //PROJECTNUM2_MYSERIALSERVER_H
+#endif //PROJECTNUM2_MYPARALLERSERVER_H

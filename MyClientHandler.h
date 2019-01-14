@@ -14,14 +14,21 @@
 using namespace std;
 
 class MyClientHandler : public ClientHandler {
+    //members
     Solver<string, string> *solver;
     CacheManager<string, string> *cacheManager;
 public:
+    // Constructor
     MyClientHandler(Solver<string, string> *solve,
                     CacheManager<string, string> *cacheManager);
 
-    virtual void handleCLient(int socketFd);
+/**
+*  The function open a socket and read the problem and result from the client by socketFd
+*/
+    virtual void handleClient(int socketFd);
 
+    // Distructor
+    virtual ~MyClientHandler() {};
 };
 
 

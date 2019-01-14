@@ -1,8 +1,10 @@
 
 #include "MySerialServer.h"
 
-# define TIME_TO_WAIT 60
+# define TIME_TO_WAIT 1
 
+
+// struct save the parameter
 struct params {
     int newSockFd;
     int sockFd;
@@ -12,40 +14,60 @@ struct params {
 
 };
 
+//Constructor
 MySerialServer::MySerialServer() {}
 
 
+/**
+ * The function open a socket
+ * @param args a struct parameters.
+ */
 void *openSocketLoop(void *args) {
     struct params *openSocket = (struct params *) args;
     timeval timeVal;
     timeVal.tv_sec = TIME_TO_WAIT;
     timeVal.tv_usec = 0;
-    char buffer[256];
-    int n;
+
+    /*Accept actual connection from the client */
+    openSocket->newSockFd = accept(openSocket->sockFd,
+                                   (struct sockaddr *) &openSocket->client_addr,
+                                   (socklen_t *) &openSocket->client);
+    if (openSocket->newSockFd < 0) {
+        perror("connect error");
+        exit(3);
+    }
+    openSocket->clientHandler->handleClient(openSocket->newSockFd);
+    close(openSocket->newSockFd);
     while (true) {
-        //  if (select(0, NULL, NULL, NULL, &timeVal) > 0) {
         /*Accept actual connection from the client */
-        setsockopt(openSocket->sockFd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeVal, sizeof(timeVal));
+        setsockopt(openSocket->sockFd, SOL_SOCKET, SO_RCVTIMEO,
+                   (char *) &timeVal, sizeof(timeVal));
         openSocket->newSockFd = accept(openSocket->sockFd,
                                        (struct sockaddr *) &openSocket->client_addr,
                                        (socklen_t *) &openSocket->client);
-        cout<<"connect"<<endl;
         if (openSocket->newSockFd < 0) {
-            if (errno == EWOULDBLOCK)	{
+            if (errno == EWOULDBLOCK) {
                 cout << "timeout!" << endl;
                 return 0;
-            }	else	{
+            } else {
                 perror("connect error");
                 exit(3);
             }
         }
-        openSocket->clientHandler->handleCLient(openSocket->newSockFd);
+
+        openSocket->clientHandler->handleClient(openSocket->newSockFd);
         close(openSocket->newSockFd);
     }
+    return 0;
 }
 
+/**
+ * The function open a socket
+ * @param port the number of port
+ * @param clientHandler a client
+ */
 void MySerialServer::open(int port, ClientHandler *clientHandler) {
-    int sockfd, newsockfd, portno, clilen;
+    int sockfd, portno, clilen,newsockfd = 0;
     struct sockaddr_in serv_addr, cli_addr;
     struct params *openSocket = new params();
 
@@ -75,11 +97,14 @@ void MySerialServer::open(int port, ClientHandler *clientHandler) {
     openSocket->sockFd = sockfd;
     pthread_t pthread;
     pthread_create(&pthread, nullptr, openSocketLoop, openSocket);
-    pthread_join(pthread,NULL);
+    pthread_join(pthread, NULL);
     stop(openSocket->sockFd);
 }
 
+/**
+ * The function stop the connection socket
+ * @param socketFd a socket
+ */
 void MySerialServer::stop(int socketFd) {
     close(socketFd);
 }
-

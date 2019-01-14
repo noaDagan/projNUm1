@@ -1,12 +1,28 @@
 #include "Searchable.h"
+
 #ifndef PROJECTNUM2_SEARCHER_H
 #define PROJECTNUM2_SEARCHER_H
 
-template <class VALUE>
+template<class VALUE>
 class Searcher {
 public:
-    virtual VALUE search (Searchable<VALUE>* searchable) = 0;
+
+    /**
+     * The function receive a searchble object, run an algoritem and return his solution
+     */
+    virtual VALUE search(Searchable<VALUE> *searchable) = 0;
+
+    /**
+     * The function returns the number od nodes evaluated
+    */
     virtual int getNumberOfNodesEvaluated() = 0;
+
+    /**
+    * The function return the path cost
+    */
+    virtual double getCost() const = 0;
+
+    virtual ~Searcher(){};
 };
 
 #endif //PROJECTNUM2_SEARCHER_H

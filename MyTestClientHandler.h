@@ -11,19 +11,26 @@
 
 
 class MyTestClientHandler : public ClientHandler {
-    Solver<string,string> *solver;
-    CacheManager <string,string> *cacheManager;
+    // Members
+    Solver<string, string> *solver;
+    CacheManager<string, string> *cacheManager;
 public:
 
-    MyTestClientHandler(Solver<string,string> *solver,CacheManager<string,string> *cacheManager) {
-        this->solver=solver;
-        this->cacheManager=cacheManager;
+    //Constructor
+    MyTestClientHandler(Solver<string, string> *solver,
+                        CacheManager<string, string> *cacheManager) {
+        this->solver = solver;
+        this->cacheManager = cacheManager;
     }
 
-    virtual void handleCLient(int socketFd) {
+/**
+*  The function open a socket and read the problem and result from the client by socketFd
+*/
+    virtual void handleClient(int socketFd) {
         char buffer[1025];
+        char resultChar[1025];
         int n;
-        string result,problem;
+        string result, problem;
         while (true) {
             bzero(buffer, 1025);
             n = read(socketFd, buffer, 1024);
@@ -31,18 +38,23 @@ public:
                 perror("ERROR reading from socket");
                 exit(1);
             }
-            if (strcmp(buffer,"end") == 0) {
+            if (strcmp(buffer, "end") == 0) {
                 return;
             }
             problem = string(buffer);
             if (this->cacheManager->haveSolution(problem)) {
-                result=this->cacheManager->getSolution(problem);
+                result = this->cacheManager->getSolution(problem);
             } else {
-                result=this->solver->solve(problem);
-                this->cacheManager->saveSolution(problem,result);
+                result = this->solver->solve(problem);
+                this->cacheManager->saveSolution(problem, result);
             }
-            char* resultChar = const_cast<char*>(result.c_str());
-            n = write(socketFd,resultChar, sizeof(resultChar));
+            bzero(resultChar,1024);
+            strcpy(resultChar,result.c_str());
+            size_t n2 = write(socketFd, resultChar, strlen(resultChar));
+            if (n2 < 0) {
+                perror("ERROR reading from socket");
+                exit(1);
+            }
         }
 
     }
