@@ -1,7 +1,7 @@
 
 #include "MySerialServer.h"
 
-# define TIME_TO_WAIT 1
+# define TIME_TO_WAIT 60
 
 
 // struct save the parameter

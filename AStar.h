@@ -68,19 +68,18 @@ public:
                 //Claculate h and the cost of the path until this successor
                 double h = abs(i - iGoal) + abs(j - jGoal);
                 double cost = tempState->getCost() +
-                              (costMap.find(currentState))->second + h;
-             //   int openIndex = this->isValueInVector(open, tempState);
-             //   int closeIndex = this->isValueInVector(close, tempState);
+                              (costMap.find(currentState))->second +h;
+
                 //If this state was already visited
-                if (costMap.count(tempState)) {
+                if ((costMap.count(tempState))||(isValueInVector(open,tempState)!=-1)) {
                     //If the new cost is more then the previous one  continue
-                    if (costMap.find(tempState)->second < cost) {
+                    if (costMap.find(tempState)->second <= cost) {
                         continue;
                         //Else replace the state path cost
                     } else {
-                        costMap.insert(
-                                pair<State<VALUE> *, double>(tempState, cost));
+                        costMap.find(tempState)->second = cost;
                         tempState->setCameFrom(currentState);
+
                     }
                     //Insert the stste and save his cost
                 } else {

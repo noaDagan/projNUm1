@@ -27,9 +27,10 @@ namespace boot {
             if (argc != 2) {
                 throw "ERROR - invalid input";
             } else {
-                CacheManager<string,string> *cacheManager = new FileCacheManager<std::string,std::string>();
+                CacheManager<string, string> *cacheManager = new FileCacheManager<std::string, std::string>();
                 Searcher<std::string> *aStar = new ASTar<std::string>();
-                Solver<std::string,std::string> *solver = new MatrixSolver<std::string,std::string>(aStar);
+                Solver<std::string, std::string> *solver = new MatrixSolver<std::string, std::string>(
+                        aStar);
                 ClientHandler *clientHandler = new MyClientHandler(solver,
                                                                    cacheManager);
                 Server *server = new MyParallerServer();
@@ -40,12 +41,14 @@ namespace boot {
                 delete solver;
                 delete server;
                 delete clientHandler;
+
                 return 0;
+
             }
         }
-        ~MyMain(){};
-    };
 
+        ~MyMain() {};
+    };
 }
 
 #endif //PROJECTNUM2_MYMAIN_H

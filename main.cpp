@@ -1,6 +1,7 @@
 #include "MyMain.h"
 #include <string>
 #include <string.h>
+#include <map>
 
 using namespace server_side;
 using namespace std;
